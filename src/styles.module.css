@@ -1,0 +1,115 @@
+.heading
+{
+  font-family: 'Abril Fatface', serif ;
+  font-size: 200% ;
+  margin-top: 15px ;
+  text-align: center ;
+}
+
+.navbar
+{
+  font-family: 'Abril Fatface', serif ;
+  font-weight: bold ;
+  border-bottom-style: solid ;
+  border-bottom-color: rgb(20, 10, 50) ;
+}
+
+.logo
+{
+  width: 250px ;
+}
+
+.mainContainer
+{
+  font-family: 'Abril Fatface', serif ;
+  text-align: center ;
+  margin-top: 3% ;
+}
+
+.error
+{
+  font-family: ABeeZee, sans-serif ;
+  font-weight: bold ;
+}
+
+.input
+{
+  margin-top: 1% ;
+  font-size: 17px ;
+  border-radius: 5px ;
+  text-transform: uppercase ;
+}
+
+.input2
+{
+  margin-top: 1% ;
+  font-size: 17px ;
+  border-radius: 5px ;
+}
+
+.button
+{
+  margin-top: 3% ;
+  background: rgb(20, 10, 50) ;
+  width: 175px ;
+  border-bottom-style: solid ;
+  border-bottom-color: rgb(0,0,0) ;
+  box-shadow:none ;
+  outline: none ;
+  border-radius: 5px ;
+}
+
+.image
+{
+  width: 100% ;
+}
+
+.hidden
+{
+  display: none ;
+}
+
+.myAni
+{
+  margin-top: 15% ;
+  margin-left: 40% ;
+  width: 100px ;
+  height: 100px ;
+  background-color: rgb(20, 10, 50) ;
+  position: relative ;
+  animation: myAni 3s linear 1.5s infinite alternate ;
+}
+
+@keyframes myAni 
+{
+  0%  
+  {
+    background-color:rgb(20, 10, 50) ;  
+    left:0px ; 
+    top:0px ;
+  }
+  25%  
+  {
+    background-color:rgb(140, 130, 20) ;  
+    left:200px ; 
+    top:0px ;
+  }
+  50%  
+  {
+    background-color:rgb(50, 55, 200) ;  
+    left:200px ; 
+    top:200px ;
+  }
+  75%
+  {
+    background-color:rgb(140, 130, 20) ;  
+    left:0px ; 
+    top:200px ;
+  }
+  75%
+  {
+    background-color:rgb(20, 10, 50) ;  
+    left:0px ; 
+    top:0px ;
+  }
+}
