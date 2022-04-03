@@ -1,7 +1,10 @@
-import React, { Suspense, lazy } from "react" ;
+import React, { lazy } from "react" ;
 import ReactDOM from "react-dom" ;
+import database from "/src/firebase.js" ;
 import { BrowserRouter, Routes, Route } from "react-router-dom" ;
-const Navbar = lazy(() => import("/src/pages/Navbar.jsx")) ;
+
+import Navbar from "/src/pages/Navbar.jsx" ;
+import Home from "/src/pages/Home.jsx" ;
 const Print = lazy(() => import("/src/pages/Print.jsx")) ;
 const Add = lazy(() => import("/src/pages/Add.jsx")) ;
 const Delete = lazy(() => import("/src/pages/Delete.jsx")) ;
@@ -16,15 +19,14 @@ function App()
   (
   <>
     <BrowserRouter>
-      <Suspense fallback={ <div className={ styles.myAni }></div> }>
-        <Routes>
-          <Route path="/" element={ <Navbar /> }>
-            <Route index element={ <Print /> } />
-            <Route path="add" element={ <Add /> } />
-            <Route path="delete" element={ <Delete /> } />
-          </Route>
-        </Routes>
-      </Suspense>
+      <Routes>
+        <Route path="/" element={ <Navbar /> }>
+          <Route index element={ <Home /> } />
+            <Route path="print" element={ <React.Suspense fallback={ <div className={ styles.myAni }></div> }> <Print /> </React.Suspense> } />
+            <Route path="add" element={ <React.Suspense fallback={ <div className={ styles.myAni }></div> }> <Add /> </React.Suspense> } />
+            <Route path="delete" element={ <React.Suspense fallback={ <div className={ styles.myAni }></div> }> <Delete /> </React.Suspense> } />
+        </Route>
+      </Routes>
     </BrowserRouter>
   </>
   ) ;

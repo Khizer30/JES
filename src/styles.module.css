@@ -6,6 +6,35 @@
   text-align: center ;
 }
 
+.header
+{
+  font-size: 250% ;
+  font-weight: bold ;
+  color: rgb(215,215,230) ;
+}
+
+.homeContainer
+{
+  height: 80vh ;
+  background-image: url("/img/blue.jpg") ;
+  text-align: center ;
+  font-family: 'Abril Fatface', serif ;
+}
+
+.homeImage
+{
+  margin-top: 5% ;
+  width: 300px ;
+}
+
+.homePar
+{
+  text-align: justify ;
+  font-size: 125% ;
+  font-family: 'Abril Fatface', serif ;
+  color: rgb(215,215,230) ;
+}
+
 .navbar
 {
   font-family: 'Abril Fatface', serif ;
@@ -71,45 +100,25 @@
 
 .myAni
 {
-  margin-top: 15% ;
-  margin-left: 40% ;
+  margin-left: 45% ;
+  margin-top: 20% ;
   width: 100px ;
   height: 100px ;
   background-color: rgb(20, 10, 50) ;
-  position: relative ;
-  animation: myAni 3s linear 1.5s infinite alternate ;
+  animation: myAni 1000ms ease 0s infinite normal none ;
 }
 
 @keyframes myAni 
 {
-  0%  
+  0% 
   {
-    background-color:rgb(20, 10, 50) ;  
-    left:0px ; 
-    top:0px ;
+    opacity: 0 ;
+    transform: rotate(-540deg) scale(0) ;
   }
-  25%  
+
+  100% 
   {
-    background-color:rgb(140, 130, 20) ;  
-    left:200px ; 
-    top:0px ;
-  }
-  50%  
-  {
-    background-color:rgb(50, 55, 200) ;  
-    left:200px ; 
-    top:200px ;
-  }
-  75%
-  {
-    background-color:rgb(140, 130, 20) ;  
-    left:0px ; 
-    top:200px ;
-  }
-  75%
-  {
-    background-color:rgb(20, 10, 50) ;  
-    left:0px ; 
-    top:0px ;
+    opacity: 1 ;
+    transform: rotate(0) scale(1) ;
   }
 }

@@ -1,17 +1,1 @@
-var a = ['', 'One ', 'Two ', 'Three ', 'Four ', 'Five ', 'Six ', 'Seven ', 'Eight ', 'Nine ', 'Ten ', 'Eleven ', 'Twelve ', 'Thirteen ', 'Fourteen ', 'Fifteen ', 'Sixteen ', 'Seventeen ', 'Eighteen ', 'Nineteen '] ;
-var b = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'] ;
-
-// Convert Numbers to Words
-function inWords (num) 
-{
-  if ((num = num.toString()).length > 9) return 'overflow' ;
-  n = ('000000000' + num).substr(-9).match(/^(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/) ;
-  if (!n) return; var str = '' ;
-  str += (n[1] != 0) ? (a[Number(n[1])] || b[n[1][0]] + ' ' + a[n[1][1]]) + 'Crore ' : '' ;
-  str += (n[2] != 0) ? (a[Number(n[2])] || b[n[2][0]] + ' ' + a[n[2][1]]) + 'Lakh ' : '' ;
-  str += (n[3] != 0) ? (a[Number(n[3])] || b[n[3][0]] + ' ' + a[n[3][1]]) + 'Thousand ' : '' ;
-  str += (n[4] != 0) ? (a[Number(n[4])] || b[n[4][0]] + ' ' + a[n[4][1]]) + 'Hundred ' : '' ;
-  str += (n[5] != 0) ? ((str != '') ? '& ' : '') + (a[Number(n[5])] || b[n[5][0]] + ' ' + a[n[5][1]]) : '' ;
-  
-  return str ;
-}
+var a=["","One ","Two ","Three ","Four ","Five ","Six ","Seven ","Eight ","Nine ","Ten ","Eleven ","Twelve ","Thirteen ","Fourteen ","Fifteen ","Sixteen ","Seventeen ","Eighteen ","Nineteen "],b=["","","Twenty","Thirty","Forty","Fifty","Sixty","Seventy","Eighty","Ninety"];function inWords(e){if((e=e.toString()).length>9)return"overflow";if(n=("000000000"+e).substr(-9).match(/^(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/),n){var r="";return r+=0!=n[1]?(a[Number(n[1])]||b[n[1][0]]+" "+a[n[1][1]])+"Crore ":"",r+=0!=n[2]?(a[Number(n[2])]||b[n[2][0]]+" "+a[n[2][1]])+"Lakh ":"",r+=0!=n[3]?(a[Number(n[3])]||b[n[3][0]]+" "+a[n[3][1]])+"Thousand ":"",r+=0!=n[4]?(a[Number(n[4])]||b[n[4][0]]+" "+a[n[4][1]])+"Hundred ":"",r+=0!=n[5]?(""!=r?"& ":"")+(a[Number(n[5])]||b[n[5][0]]+" "+a[n[5][1]]):""}}

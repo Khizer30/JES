@@ -1,58 +1,58 @@
 import React, { useState, useRef } from "react" ;
 import styles from "/src/styles.module.css" ;
 
-// Get Student Names
-function getNames()
-{
-  let data = JSON.parse(sessionStorage.data) ;
-  let names = [] ;
-  for (var x in data)
-  {
-    names.push(x) ;
-  }
-
-  return names ;
-}
-
-// Get Date
-function getToday(style)
-{
-  let today = new Date() ;
-  let dd = String(today.getDate()).padStart(2, '0') ;
-  let mm = String(today.getMonth() + 1).padStart(2, '0') ;
-  let yyyy = today.getFullYear() ;
-
-  if (style == "date")
-  {
-    today = yyyy + "-" + mm + "-" + dd ;
-  }
-  else if (style == "issue")
-  {
-    today = dd + "/" + mm + "/" + yyyy ;
-  }
-  else if (style == "due")
-  {
-    dd = String(today.getDate() + 7).padStart(2, '0') ;
-    today = dd + "/" + mm + "/" + yyyy ;
-  }
-  else if (style == "month")
-  {
-    const monthNames = ["January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"] ;
-    today = monthNames[today.getMonth()] ;
-  }
-
-  return today ;
-}
-
-// MS Word API Function
-function loadFile(url, callback) 
-{
-  PizZipUtils.getBinaryContent(url, callback) ;
-}
-
 function Print()
 {
+  // Get Student Names
+  const getNames = () =>
+  {
+    let data = JSON.parse(sessionStorage.data) ;
+    let names = [] ;
+    for (var x in data)
+    {
+      names.push(x) ;
+    }
+
+    return names ;
+  }
+
+  // MS Word API Function
+  const loadFile = (url, callback) => 
+  {
+    PizZipUtils.getBinaryContent(url, callback) ;
+  }
+
+  // Get Date
+  const getToday = (style) =>
+  {
+    let today = new Date() ;
+    let dd = String(today.getDate()).padStart(2, '0') ;
+    let mm = String(today.getMonth() + 1).padStart(2, '0') ;
+    let yyyy = today.getFullYear() ;
+
+    if (style == "date")
+    {
+      today = yyyy + "-" + mm + "-" + dd ;
+    }
+    else if (style == "issue")
+    {
+      today = dd + "/" + mm + "/" + yyyy ;
+    }
+    else if (style == "due")
+    {
+      dd = String(today.getDate() + 7).padStart(2, '0') ;
+      today = dd + "/" + mm + "/" + yyyy ;
+    }
+    else if (style == "month")
+    {
+      const monthNames = ["January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"] ;
+      today = monthNames[today.getMonth()] ;
+    }
+
+    return today ;
+  }
+
   // Variables
   const [names, setNames] = useState(getNames) ;
   const [student, setStudent] = useState("") ;

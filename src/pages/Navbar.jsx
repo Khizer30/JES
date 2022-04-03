@@ -19,7 +19,7 @@ function Navbar()
         <div id="navcol-1" className="collapse navbar-collapse">
           <ul className="navbar-nav ms-auto">
             <li className="nav-item">
-              <Link to="/" className="nav-link"> Print Challan </Link>
+              <Link to="print" className="nav-link"> Print Challan </Link>
             </li>
             <li className="nav-item">
               <Link to="add" className="nav-link"> Add Student </Link>
