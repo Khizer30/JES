@@ -1,14 +1,15 @@
 import React, { lazy } from "react" ;
 import ReactDOM from "react-dom" ;
-import database from "/src/firebase.js" ;
+import loadable from "@loadable/component" ;
 import { BrowserRouter, Routes, Route } from "react-router-dom" ;
-
-import Navbar from "/src/pages/Navbar.jsx" ;
-import Home from "/src/pages/Home.jsx" ;
-const Print = lazy(() => import("/src/pages/Print.jsx")) ;
-const Add = lazy(() => import("/src/pages/Add.jsx")) ;
-const Delete = lazy(() => import("/src/pages/Delete.jsx")) ;
 import styles from "/src/styles.module.css" ;
+import database from "/src/firebase.js" ;
+
+const Navbar = loadable(() => import("/src/pages/Navbar.jsx"), { fallback: <div className={ styles.myAni }></div> }) ;
+const Home = loadable(() => import("/src/pages/Home.jsx"), { fallback: <div className={ styles.myAni }></div> }) ;
+const Print = loadable(() => import("/src/pages/Print.jsx"), { fallback: <div className={ styles.myAni }></div> }) ;
+const Add = loadable(() => import("/src/pages/Add.jsx"), { fallback: <div className={ styles.myAni }></div> }) ;
+const Delete = loadable(() => import("/src/pages/Delete.jsx"), { fallback: <div className={ styles.myAni }></div> }) ;
 
 // HTML DOM Element
 const app = document.getElementById("app") ;
@@ -22,9 +23,9 @@ function App()
       <Routes>
         <Route path="/" element={ <Navbar /> }>
           <Route index element={ <Home /> } />
-            <Route path="print" element={ <React.Suspense fallback={ <div className={ styles.myAni }></div> }> <Print /> </React.Suspense> } />
-            <Route path="add" element={ <React.Suspense fallback={ <div className={ styles.myAni }></div> }> <Add /> </React.Suspense> } />
-            <Route path="delete" element={ <React.Suspense fallback={ <div className={ styles.myAni }></div> }> <Delete /> </React.Suspense> } />
+            <Route path="print" element={ <Print /> } />
+            <Route path="add" element={ <Add /> } />
+            <Route path="delete" element={ <Delete /> } />
         </Route>
       </Routes>
     </BrowserRouter>

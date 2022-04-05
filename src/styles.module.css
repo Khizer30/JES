@@ -15,7 +15,7 @@
 
 .homeContainer
 {
-  height: 80vh ;
+  min-height: 80vh ;
   background-image: url("/img/blue.jpg") ;
   text-align: center ;
   font-family: 'Abril Fatface', serif ;
