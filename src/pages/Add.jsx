@@ -3,6 +3,10 @@ import { set, ref } from "firebase/database" ;
 import database from "/src/firebase.js" ;
 import styles from "/src/styles.module.css" ;
 
+// Image
+import databaseLogo from "/img/add.png" ;
+
+// Add Component
 function Add()
 {
   // Variables
@@ -219,7 +223,7 @@ function Add()
         </div>
 
         <div className="col-md-6 d-md-flex align-items-md-center">
-          <img src="/img/database.png" alt="Database Clipart" className={ styles.image } />
+          <img src={ databaseLogo } alt="Database Clipart" className={ styles.image } />
         </div>
 
       </div>

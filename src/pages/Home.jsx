@@ -1,15 +1,58 @@
-import React from "react" ;
+import React, { useState } from "react" ;
+import { Link } from "react-router-dom";
 import styles from "/src/styles.module.css" ;
 
+// Images
+import homeLogo from "/img/home_logo.png" ;
+import homeHover from "/img/home_hover.png" ;
+import homePrint from "/img/home_print.png" ;
+import homeAdd from "/img/home_add.png" ;
+import homeDelete from "/img/home_delete.png" ;
+
+// Modal Component
+function Modal(props)
+{
+  const [src, setSrc] = useState(props.source) ;
+
+  const effect = () =>
+  {
+    setSrc(homeHover) ;
+  }
+
+  const reEffect = () =>
+  {
+    setSrc(props.source) ;
+  }
+
+  let html =
+  (
+  <>
+    <Link to={ props.link }>
+      <img src={ src } onMouseEnter={ effect } onMouseLeave={ reEffect } className={ styles.modalImage } />
+    </Link>
+  </>
+  ) ;
+  
+  return html ;
+}
+
+// Home Component
 function Home()
 {
+  // Title
+  document.title = "Jakson Education System" ;
+
   let html = 
   (
   <>
     <div className={ "container-fluid " + styles.homeContainer }>
-      <img src="/img/logo_simple.png" className={ styles.homeImage } />
+      <img src={ homeLogo } className={ styles.homeImage } />
       <p className={ styles.header }> JAKSON EDUCATION SYSTEM </p>
-      <p className={ styles.homePar }> Jakson Education System is one of the emerging educational institutions in Pakistan. It portrays the unique concept of “School Without Bag” with the “Hands-on Learning” phenomenon. Jakson Education System provides quality education from early years till grade VI. Compliant with national policies; our education system adopts an analytical approach to seek the hidden talents of the future of this nation. It is our primary responsibility to make the students well equipped with competitive knowledge and build them morally and ethically to let them contribute towards nation-building. </p>
+      
+      <Modal source={ homePrint } link="print" />
+      <Modal source={ homeAdd } link="add" />
+      <Modal source={ homeDelete } link="delete" />
+      
     </div>
   </>
   ) ;

@@ -3,21 +3,22 @@ import { ref, remove } from "firebase/database" ;
 import database from "/src/firebase.js" ;
 import styles from "/src/styles.module.css" ;
 
-// Get Student Names
-function getNames()
-{
-  let data = JSON.parse(sessionStorage.data) ;
-  let names = [] ;
-  for (var x in data)
-  {
-    names.push(x) ;
-  }
-
-  return names ;
-}
-
+// Delete Component
 function Delete()
 {
+  // Get Student Names
+  const getNames = () =>
+  {
+    let data = JSON.parse(sessionStorage.data) ;
+    let names = [] ;
+    for (var x in data)
+    {
+      names.push(x) ;
+    }
+
+    return names ;
+  }
+
   // Variables
   const [student, setStudent] = useState("") ;
   const [names, setNames] = useState(getNames) ;
@@ -57,9 +58,9 @@ function Delete()
   {
     let html =
     (
-      <>
-        <option value={ x } key={ x }> { x } </option>
-      </>
+    <>
+      <option value={ x } key={ x }> { x } </option>
+    </>
     ) ;
 
     return html ;

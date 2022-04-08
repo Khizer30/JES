@@ -2,18 +2,19 @@ import React, { lazy } from "react" ;
 import ReactDOM from "react-dom" ;
 import loadable from "@loadable/component" ;
 import { BrowserRouter, Routes, Route } from "react-router-dom" ;
-import styles from "/src/styles.module.css" ;
 import database from "/src/firebase.js" ;
 
-const Navbar = loadable(() => import("/src/pages/Navbar.jsx"), { fallback: <div className={ styles.myAni }></div> }) ;
-const Home = loadable(() => import("/src/pages/Home.jsx"), { fallback: <div className={ styles.myAni }></div> }) ;
-const Print = loadable(() => import("/src/pages/Print.jsx"), { fallback: <div className={ styles.myAni }></div> }) ;
-const Add = loadable(() => import("/src/pages/Add.jsx"), { fallback: <div className={ styles.myAni }></div> }) ;
-const Delete = loadable(() => import("/src/pages/Delete.jsx"), { fallback: <div className={ styles.myAni }></div> }) ;
+import MyAni from "/src/pages/MyAni.jsx" ;
+const Navbar = loadable(() => import("/src/pages/Navbar.jsx"), { fallback: <MyAni /> }) ;
+const Home = loadable(() => import("/src/pages/Home.jsx"), { fallback: <MyAni /> }) ;
+const Print = loadable(() => import("/src/pages/Print.jsx"), { fallback: <MyAni /> }) ;
+const Add = loadable(() => import("/src/pages/Add.jsx"), { fallback: <MyAni /> }) ;
+const Delete = loadable(() => import("/src/pages/Delete.jsx"), { fallback: <MyAni /> }) ;
 
 // HTML DOM Element
 const app = document.getElementById("app") ;
 
+// App Component
 function App()
 {
   let html =
@@ -23,9 +24,9 @@ function App()
       <Routes>
         <Route path="/" element={ <Navbar /> }>
           <Route index element={ <Home /> } />
-            <Route path="print" element={ <Print /> } />
-            <Route path="add" element={ <Add /> } />
-            <Route path="delete" element={ <Delete /> } />
+          <Route path="print" element={ <Print /> } />
+          <Route path="add" element={ <Add /> } />
+          <Route path="delete" element={ <Delete /> } />
         </Route>
       </Routes>
     </BrowserRouter>

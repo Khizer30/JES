@@ -1,6 +1,10 @@
 import React, { useState, useRef } from "react" ;
 import styles from "/src/styles.module.css" ;
 
+// Image
+import challanLogo from "/img/print.png" ;
+
+// Print Component
 function Print()
 {
   // Get Student Names
@@ -78,7 +82,7 @@ function Print()
   {
     loadFile(
       // Template File
-      "template.docx",
+      "/word/template.docx",
       function (error, content) 
       {
         if (error) 
@@ -164,9 +168,9 @@ function Print()
   {
     let html =
     (
-      <>
-        <option value={ x } key={ x }> { x } </option>
-      </>
+    <>
+      <option value={ x } key={ x }> { x } </option>
+    </>
     ) ;
 
     return html ;
@@ -291,7 +295,7 @@ function Print()
           </form>
         </div>
         <div className="col-md-6 d-md-flex align-items-md-center">
-          <img src="/img/fee_challan.png" alt="Fee Challan Image" className={ styles.image } />
+          <img src={ challanLogo } alt="Fee Challan Image" className={ styles.image } />
         </div>
       </div>
     </div>
