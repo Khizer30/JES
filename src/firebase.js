@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app" ;
 import { getDatabase, ref, onValue } from "firebase/database" ;
+import { getAuth } from "firebase/auth" ;
 
 const firebaseConfig = 
 {
@@ -15,23 +16,24 @@ const firebaseConfig =
 // Initialize Firebase
 const app = initializeApp(firebaseConfig) ;
 const database = getDatabase(app) ;
+const auth = getAuth(app) ;
 
 // Get Data from Firebase
-(function getData()
+function getData()
 {
   let theRef = ref(database, "/") ;
   onValue(theRef, (snapshot) => 
   {
     if (snapshot.exists())
     {
-      sessionStorage.data = JSON.stringify(snapshot.val()) ;
+      localStorage.setItem("data", JSON.stringify(snapshot.val())) ;
     }
     else
     {
-      sessionStorage.data = JSON.stringify([]) ;
+      localStorage.setItem("data", JSON.stringify([])) ;
     }
   }) ;
-}) () ;
+}
 
-// Export Database
-export default database ;
+// Export Database, GetData & Auth
+export { database, getData, auth } ;

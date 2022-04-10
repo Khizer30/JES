@@ -16,7 +16,7 @@
 .homeContainer
 {
   min-height: 80vh ;
-  background-image: url("/img/home_background.jpg") ;
+  background-image: url("/img/background.jpg") ;
   text-align: center ;
   font-family: 'Abril Fatface', serif ;
 }
@@ -62,6 +62,7 @@
 
 .error
 {
+  text-align: center ;
   font-family: ABeeZee, sans-serif ;
   font-weight: bold ;
 }
@@ -129,4 +130,51 @@
     opacity: 1 ;
     transform: rotate(0) scale(1) ;
   }
+}
+
+.cursor
+{
+  cursor: pointer ;
+}
+
+
+
+/* NoPage Styles */
+.NoPageContainer
+{
+  text-align: center ;
+  font-family: 'Abril Fatface', serif ;
+  height: 91vh ;
+  background: rgb(35,40,70) ;
+  color: rgb(230,235,240) ;
+}
+
+.NoPageH1
+{
+  font-size: 1000% ;
+  padding-top: 15% ;
+}
+
+.NoPageH2
+{
+  font-size: 500% ;
+}
+
+
+
+/* LogIn Styles */
+.LogInSec
+{
+  background: url("/img/background.jpg") center ;
+  height: 91vh ;
+}
+
+.LogInImg
+{
+  width: 150px ;
+}
+
+.LogInInput
+{
+  font-family: ABeeZee, sans-serif ;
 }

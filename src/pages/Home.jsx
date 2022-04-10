@@ -1,5 +1,6 @@
 import React, { useState } from "react" ;
 import { Link } from "react-router-dom";
+import { getData } from "/src/firebase.js" ;
 import styles from "/src/styles.module.css" ;
 
 // Images
@@ -12,13 +13,16 @@ import homeDelete from "/img/home_delete.png" ;
 // Modal Component
 function Modal(props)
 {
+  // Variable
   const [src, setSrc] = useState(props.source) ;
 
+  // On Mouse In
   const effect = () =>
   {
     setSrc(homeHover) ;
   }
 
+  // On Mouse Out
   const reEffect = () =>
   {
     setSrc(props.source) ;
@@ -42,17 +46,21 @@ function Home()
   // Title
   document.title = "Jakson Education System" ;
 
+  // Fetch Data from Firebase
+  getData() ;
+
   let html = 
   (
   <>
     <div className={ "container-fluid " + styles.homeContainer }>
       <img src={ homeLogo } className={ styles.homeImage } />
-      <p className={ styles.header }> JAKSON EDUCATION SYSTEM </p>
-      
-      <Modal source={ homePrint } link="print" />
-      <Modal source={ homeAdd } link="add" />
-      <Modal source={ homeDelete } link="delete" />
-      
+
+      <div>
+        <Modal source={ homePrint } link="print" />
+        <Modal source={ homeAdd } link="add" />
+        <Modal source={ homeDelete } link="delete" />
+      </div>
+
     </div>
   </>
   ) ;

@@ -10,7 +10,7 @@ function Print()
   // Get Student Names
   const getNames = () =>
   {
-    let data = JSON.parse(sessionStorage.data) ;
+    let data = JSON.parse(localStorage.getItem("data")) ;
     let names = [] ;
     for (var x in data)
     {
@@ -18,12 +18,6 @@ function Print()
     }
 
     return names ;
-  }
-
-  // MS Word API Function
-  const loadFile = (url, callback) => 
-  {
-    PizZipUtils.getBinaryContent(url, callback) ;
   }
 
   // Get Date
@@ -66,16 +60,22 @@ function Print()
   const [date, setDate] = useState(getToday("date")) ;
   const [fees, setFees] = useState("") ;
   const [arrears, setArrears] = useState("") ;
+  let data = JSON.parse(localStorage.getItem("data")) ;
   // ... 
   const [showRest, setShowRest] = useState(false) ;
   const [error, setError] = useState("") ;
   const [message, setMes] = useState("") ;
   const [showErr, setShowErr] = useState(false) ;
   const [showMes, setShowMes] = useState(false) ;
-  let data = JSON.parse(sessionStorage.data) ;
 
   // Title
   document.title = "JES - Print Fee Challan" ;
+
+  // MS Word API Function
+  const loadFile = (url, callback) => 
+  {
+    PizZipUtils.getBinaryContent(url, callback) ;
+  }
 
   // Print Fee Challan
   const printChallan = () =>
@@ -169,7 +169,7 @@ function Print()
     let html =
     (
     <>
-      <option value={ x } key={ x }> { x } </option>
+      <option value={ x }> { x } </option>
     </>
     ) ;
 
@@ -207,7 +207,7 @@ function Print()
               </div>
             }
 
-            <select value={ student } onChange={ handleStudent } className={ "form-select " + styles.input2 }>
+            <select value={ student } onChange={ handleStudent } autoFocus className={ "form-select " + styles.input2 }>
               <option value="" disabled className={ styles.hidden }> Select a Student </option>
               {
                 names.map(mapper)

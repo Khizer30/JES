@@ -1,6 +1,6 @@
 import React, { useState } from "react" ;
 import { set, ref } from "firebase/database" ;
-import database from "/src/firebase.js" ;
+import { database } from "/src/firebase.js" ;
 import styles from "/src/styles.module.css" ;
 
 // Image
@@ -13,7 +13,7 @@ function Add()
   const [inputs, setInputs] = useState({}) ;
   // ...
   const [error, setError] = useState("") ;
-  const [message, SetMes] = useState("") ;
+  const [message, setMes] = useState("") ;
   const [showErr, setShowErr] = useState(false) ;
   const [showMes, setShowMes] = useState(false) ;
 
@@ -69,7 +69,7 @@ function Add()
     {
       sendData() ;
 
-      SetMes(inputs.name + " Added To Database") ;
+      setMes(inputs.name + " Added To Database") ;
       setShowMes(true) ;
     }
   }

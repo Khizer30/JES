@@ -1,5 +1,6 @@
 import React from "react" ;
 import { Outlet, NavLink } from "react-router-dom" ;
+import { useAuth } from "/src/auth.jsx" ;
 import styles from "/src/styles.module.css" ;
 
 // Image
@@ -8,8 +9,19 @@ import logo from "/img/logo.png" ;
 // Navbar Component
 function Navbar()
 {
+  // Variable
+  const auth = useAuth() ;
+
+  // Log Out
+  const handleLogOut = () =>
+  {
+    auth.logout() ;
+  }
+
   let html =
   (
+  <>
+  { auth.user &&
   <>
     <nav className={ "navbar navbar-light navbar-expand-md " + styles.navbar }>
       <div className="container-fluid">
@@ -31,12 +43,22 @@ function Navbar()
             <li className="nav-item">
               <NavLink to="delete" className="nav-link"> Delete Student </NavLink>
             </li>
+              <li className="nav-item">
+                <p onClick={ handleLogOut } className={ "nav-link " + styles.cursor }> Log Out </p>
+              </li>
           </ul>
         </div>
       </div>
     </nav>
 
     <Outlet />
+  </>
+  }
+  { !auth.user &&
+  <>
+    <Outlet />
+  </>
+  }
   </>
   ) ;
 
