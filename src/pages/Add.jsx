@@ -64,7 +64,7 @@ function Add()
     if (checkInput(inputs.name, 50, "^[a-zA-Z].*[\s\.]*$") &&
     checkInput(inputs.father, 50, "^[a-zA-Z].*[\s\.]*$") &&
     checkInput(inputs.theClass, 50, "^[a-zA-Z].*[\s\.]*$") &&
-    checkInput(inputs.reg, 50, "^[a-zA-Z].*[\s\.]*$") &&
+    checkInput(inputs.reg, 50, "[A-Z\d]") &&
     checkInput(inputs.fees, 6, "^[0-9]+$"))
     {
       sendData() ;
@@ -191,7 +191,7 @@ function Add()
                 maxLength="50"
                 minLength="5"
                 inputMode="text"
-                pattern="^[a-zA-Z].*[\s\.]*$"
+                pattern="[A-Z\d]"
                 required
                 placeholder="Reg No."
                 className={ "form-control " + styles.input } 

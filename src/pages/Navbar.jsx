@@ -38,6 +38,9 @@ function Navbar()
               <NavLink to="print" className="nav-link"> Print Challan </NavLink>
             </li>
             <li className="nav-item">
+              <NavLink to="edit" className="nav-link"> Edit Student </NavLink>
+            </li>
+            <li className="nav-item">
               <NavLink to="add" className="nav-link"> Add Student </NavLink>
             </li>
             <li className="nav-item">

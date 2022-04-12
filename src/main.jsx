@@ -10,6 +10,7 @@ const Navbar = loadable(() => import("/src/pages/Navbar.jsx"), { fallback: <MyAn
 const Home = loadable(() => import("/src/pages/Home.jsx"), { fallback: <MyAni /> }) ;
 const LogIn = loadable(() => import("/src/pages/LogIn.jsx"), { fallback: <MyAni /> }) ;
 const Print = loadable(() => import("/src/pages/Print.jsx"), { fallback: <MyAni /> }) ;
+const Edit = loadable(() => import("/src/pages/Edit.jsx"), { fallback: <MyAni /> }) ;
 const Add = loadable(() => import("/src/pages/Add.jsx"), { fallback: <MyAni /> }) ;
 const Delete = loadable(() => import("/src/pages/Delete.jsx"), { fallback: <MyAni /> }) ;
 const NoPage = loadable(() => import("/src/pages/NoPage.jsx"), { fallback: <MyAni /> }) ;
@@ -55,6 +56,7 @@ function App()
             <Route index element={ <Root /> } />
 
             <Route path="print" element={ <RequireAuth> <Print /> </RequireAuth> } />
+            <Route path="edit" element={ <RequireAuth> <Edit /> </RequireAuth> } />
             <Route path="add" element={ <RequireAuth> <Add /> </RequireAuth> } />
             <Route path="delete" element={ <RequireAuth> <Delete /> </RequireAuth> } />
 
