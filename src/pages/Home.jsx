@@ -7,6 +7,7 @@ import styles from "/src/styles.module.css" ;
 import homeLogo from "/img/home_logo.png" ;
 import homeHover from "/img/home_hover.png" ;
 import homePrint from "/img/home_print.png" ;
+import homeEdit from "/img/home_edit.png" ;
 import homeAdd from "/img/home_add.png" ;
 import homeDelete from "/img/home_delete.png" ;
 
@@ -57,8 +58,9 @@ function Home()
 
       <div>
         <Modal source={ homePrint } link="print" />
-        <Modal source={ homeAdd } link="add" />
+        <Modal source={ homeEdit } link="edit" />
         <Modal source={ homeDelete } link="delete" />
+        <Modal source={ homeAdd } link="add" />
       </div>
 
     </div>

@@ -66,6 +66,7 @@
   text-align: center ;
   font-family: ABeeZee, sans-serif ;
   font-weight: bold ;
+  font-size: 15px ;
 }
 
 .input
@@ -136,6 +137,22 @@
 .cursor
 {
   cursor: pointer ;
+}
+
+.invisible
+{
+  visibility: hidden ;
+}
+
+.displayNone
+{
+  display: none ;
+}
+
+.visible
+{
+  display: block ;
+  visibility: visible ;
 }
 
 

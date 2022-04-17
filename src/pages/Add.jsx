@@ -13,12 +13,11 @@ function Add()
   const [inputs, setInputs] = useState({}) ;
   // ...
   const [error, setError] = useState("") ;
-  const [message, setMes] = useState("") ;
+  const [errType, setErrType] = useState("") ;
   const [showErr, setShowErr] = useState(false) ;
-  const [showMes, setShowMes] = useState(false) ;
 
   // Title
-  document.title = "JES - Add Student" ;
+  document.title = "JES - Add Student to Database" ;
 
   // Check Input
   const checkInput = (it, len, reg) =>
@@ -35,15 +34,17 @@ function Add()
         }
         else
         {
-          setShowErr(true) ;
           setError("Lengthy Input") ;
+          setErrType("alert-danger") ;
+          setShowErr(true) ;
           return false ;
         }
       }
       else
       {
-        setShowErr(true) ;
         setError("Invalid Input") ;
+        setErrType("alert-danger") ;
+        setShowErr(true) ;
         return false ;
       }
     }
@@ -51,6 +52,7 @@ function Add()
     {
       setShowErr(true) ;
       setError("Don't Leave Any Field Empty") ;
+      setErrType("alert-danger") ;
       return false ;
     }
   }
@@ -59,7 +61,6 @@ function Add()
   const addStudent = () =>
   {
     setShowErr(false) ;
-    setShowMes(false) ;
 
     if (checkInput(inputs.name, 50, "^[a-zA-Z].*[\s\.]*$") &&
     checkInput(inputs.father, 50, "^[a-zA-Z].*[\s\.]*$") &&
@@ -69,8 +70,9 @@ function Add()
     {
       sendData() ;
 
-      setMes(inputs.name + " Added To Database") ;
-      setShowMes(true) ;
+      setError(inputs.name + " Added To Database") ;
+      setErrType("alert-success") ;
+      setShowErr(true) ;
     }
   }
 
@@ -82,7 +84,8 @@ function Add()
       "Father": inputs.father,
       "Class": inputs.theClass,
       "Reg": inputs.reg,
-      "Fees": inputs.fees
+      "Fees": inputs.fees,
+      "Arrears": "0"
     }) ;
   }
 
@@ -117,17 +120,9 @@ function Add()
       <div className="row">
         <div className="col-md-6">
 
-          { showErr &&
-            <div role="alert" className={ "alert alert-danger " + styles.error }>
-              <span> { error } </span>
-            </div>
-          }
-
-          { showMes &&
-            <div role="alert" className={ "alert alert-success " + styles.error }>
-              <span> { message } </span>
-            </div>
-          }
+          <div role="alert" className={ (showErr ? styles.vis : styles.displayNone) + " " + styles.error + " alert " + errType}>
+            <span> { error } </span>
+          </div>
 
           <form action="" method="post" target="_self" encType="application/x-www-form-urlencoded" 
           autoComplete="off" noValidate onSubmit={ handleSubmit }>

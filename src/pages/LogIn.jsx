@@ -1,5 +1,4 @@
 import React, { useState } from "react" ;
-import { useNavigate } from "react-router-dom" ;
 import { useAuth } from "/src/auth.jsx" ;
 import { signInWithEmailAndPassword } from "firebase/auth" ;
 import { auth } from "/src/firebase.js" ;
@@ -13,9 +12,8 @@ function LogIn()
   const admin = useAuth() ;
   // ...
   const [error, setError] = useState("") ;
-  const [message, setMes] = useState("") ;
+  const [errType, setErrType] = useState("") ;
   const [showErr, setShowErr] = useState(false) ;
-  const [showMes, setShowMes] = useState(false) ;
 
   // Title
   document.title = "JES - Log In" ;
@@ -35,22 +33,25 @@ function LogIn()
         }
         else
         {
+          setError("Don't Leave Any Field Empty") ;
+          setErrType("alert-danger") ;
           setShowErr(true) ;
-          setError("Lengthy Input") ;
           return false ;
         }
       }
       else
       {
-        setShowErr(true) ;
         setError("Invalid Input") ;
+        setErrType("alert-danger") ;
+        setShowErr(true) ;
         return false ;
       }
     }
     else
     {
-      setShowErr(true) ;
       setError("Don't Leave Any Field Empty") ;
+      setErrType("alert-danger") ;
+      setShowErr(true) ;
       return false ;
     }
   }
@@ -93,6 +94,7 @@ function LogIn()
         setError(err.message) ;
       }
 
+      setErrType("alert-danger") ;
       setShowErr(true) ;
     })
   }
@@ -101,7 +103,6 @@ function LogIn()
   const checkCred = () =>
   {
     setShowErr(false) ;
-    setShowMes(false) ;
 
     if (checkInput(inputs.email, 320, "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?:[A-Z]{2}|com|org|net|gov|info)\\b")
     && checkInput(inputs.password, 30, "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&=])[A-Za-z\\d@$!%*#?&=]{8,}$"))
@@ -120,17 +121,9 @@ function LogIn()
           <img src="/img/home_logo.png" className={ styles.LogInImg } />
         </div>
 
-        { showErr &&
-          <div role="alert" className={ "alert alert-danger " + styles.error }>
-            <span> { error } </span>
-          </div>
-        }
-
-        { showMes &&
-          <div role="alert" className={ "alert alert-success " + styles.error }>
-            <span> { message } </span>
-          </div>
-        }
+        <div role="alert" className={ (showErr ? styles.vis : styles.displayNone) + " " + styles.error + " alert " + errType}>
+          <span> { error } </span>
+        </div>
 
         <div className="mb-3">
           <input 

@@ -7,10 +7,12 @@ import challanLogo from "/img/print.png" ;
 // Print Component
 function Print()
 {
+  // Get Data from Storage
+  let data = JSON.parse(localStorage.getItem("data")) ;
+
   // Get Student Names
   const getNames = () =>
   {
-    let data = JSON.parse(localStorage.getItem("data")) ;
     let names = [] ;
     for (var x in data)
     {
@@ -52,7 +54,7 @@ function Print()
   }
 
   // Variables
-  const [names, setNames] = useState(getNames) ;
+  let names = getNames() ;
   const [student, setStudent] = useState("") ;
   const father = useRef("") ;
   const theClass = useRef("") ;
@@ -60,16 +62,14 @@ function Print()
   const [date, setDate] = useState(getToday("date")) ;
   const [fees, setFees] = useState("") ;
   const [arrears, setArrears] = useState("") ;
-  let data = JSON.parse(localStorage.getItem("data")) ;
   // ... 
   const [showRest, setShowRest] = useState(false) ;
   const [error, setError] = useState("") ;
-  const [message, setMes] = useState("") ;
+  const [errType, setErrType] = useState("") ;
   const [showErr, setShowErr] = useState(false) ;
-  const [showMes, setShowMes] = useState(false) ;
 
   // Title
-  document.title = "JES - Print Fee Challan" ;
+  document.title = "JES - Fee Challan Generator" ;
 
   // MS Word API Function
   const loadFile = (url, callback) => 
@@ -125,8 +125,9 @@ function Print()
       }
     ) ;
 
-    setMes(student + "'s Fee Challan Printed!") ;
-    setShowMes(true) ;
+    setError(student + "'s Fee Challan Printed!") ;
+    setErrType("alert-success") ;
+    setShowErr(true) ;
   }
 
   // Handle Change
@@ -161,6 +162,7 @@ function Print()
     theClass.current = data[name]["Class"] ;
     reg.current = data[name]["Reg"] ;
     setFees(data[name]["Fees"]) ;
+    setArrears(data[name]["Arrears"]) ;
   }
  
   // Map Options
@@ -186,7 +188,7 @@ function Print()
   (
   <>
     <div className="container-fluid">
-      <h1 className={ styles.heading }> JES Fee Challan Generator </h1>
+      <h1 className={ styles.heading }> Fee Challan Generator </h1>
     </div>
 
     <div className={ "container-fluid " + styles.mainContainer }>
@@ -195,24 +197,19 @@ function Print()
           <form action="" method="post" target="_self" encType="application/x-www-form-urlencoded" 
           autoComplete="off" noValidate onSubmit={ handleSubmit }>
 
-            { showErr &&
-              <div role="alert" className={ "alert alert-danger " + styles.error }>
-                <span> { error } </span>
-              </div>
-            }
+            <div role="alert" className={ (showErr ? styles.vis : styles.displayNone) + " " + styles.error + " alert " + errType}>
+              <span> { error } </span>
+            </div>
 
-            { showMes &&
-              <div role="alert" className={ "alert alert-success " + styles.error }>
-                <span> { message } </span>
-              </div>
-            }
-
-            <select value={ student } onChange={ handleStudent } autoFocus className={ "form-select " + styles.input2 }>
-              <option value="" disabled className={ styles.hidden }> Select a Student </option>
-              {
-                names.map(mapper)
-              }
-            </select>
+            <div className="form-floating mb-3 mt-3">
+              <select name="student" value={ student } onChange={ handleStudent } autoFocus className={ "form-select " + styles.input2 }>
+                <option value="" disabled className={ styles.hidden }> Select a Student </option>
+                {
+                  names.map(mapper)
+                }
+              </select>
+              <label htmlFor="student"> Name </label>
+            </div>
 
             <div className="form-floating mb-3 mt-3">
               <input 
@@ -222,7 +219,7 @@ function Print()
                 placeholder="Father's Name"
                 disabled
                 className={ "form-control " + styles.input } 
-                defaultValue={ father.current }
+                value={ father.current }
               />
               <label htmlFor="father"> Father's Name </label>
             </div>
@@ -253,15 +250,17 @@ function Print()
               <label htmlFor="reg"> Reg No. </label>
             </div>
 
-            { showRest &&
-            <>
-              <input 
-                name="date" 
-                type="date"
-                className={ "form-control " + styles.input } 
-                onChange={ handleChange }
-                value={ date }
-              />
+            <div className={ showRest ? styles.visible : styles.invisible }>
+              <div className="form-floating mb-3 mt-3">
+                <input 
+                  name="date" 
+                  type="date"
+                  className={ "form-control " + styles.input } 
+                  onChange={ handleChange }
+                  value={ date }
+                />
+                <label htmlFor="date"> Date </label>
+              </div>
 
               <div className="form-floating mb-3 mt-3">
                 <input 
@@ -290,13 +289,15 @@ function Print()
               </div>
 
               <button onClick={ printChallan } type="button" className={ "btn btn-primary " + styles.button }> Create Fee Challan </button>
-            </>
-            }
+           
+            </div>
           </form>
         </div>
+
         <div className="col-md-6 d-md-flex align-items-md-center">
           <img src={ challanLogo } alt="Fee Challan Image" className={ styles.image } />
         </div>
+        
       </div>
     </div>
   </>

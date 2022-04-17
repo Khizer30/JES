@@ -4,6 +4,9 @@ import styles from "/src/styles.module.css" ;
 // NoPage Component
 function NoPage()
 {
+  // Title
+  document.title = "404" ;
+
   let html =
   (
   <>

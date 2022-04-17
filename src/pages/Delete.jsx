@@ -6,10 +6,12 @@ import styles from "/src/styles.module.css" ;
 // Delete Component
 function Delete()
 {
+  // Get Data from Storage
+  let data = JSON.parse(localStorage.getItem("data")) ;
+
   // Get Student Names
   const getNames = () =>
   {
-    let data = JSON.parse(localStorage.getItem("data")) ;
     let names = [] ;
     for (var x in data)
     {
@@ -21,25 +23,24 @@ function Delete()
 
   // Variables
   const [student, setStudent] = useState("") ;
-  const [names, setNames] = useState(getNames) ;
+  let names = getNames() ;
   // ...
   const [error, setError] = useState("") ;
-  const [message, setMes] = useState("") ;
+  const [errType, setErrType] = useState("") ;
   const [showErr, setShowErr] = useState(false) ;
-  const [showMes, setShowMes] = useState(false) ;
 
   // Title
-  document.title = "JES - Remove Student" ;
+  document.title = "JES - Remove Student from Database" ;
 
   // Delete Student
   const delStudent = () =>
   {
     setShowErr(false) ;
-    setShowMes(false) ;
 
     if (student == "")
     {
       setError("Select a Student to Delete") ;
+      setErrType("alert-danger") ;
       setShowErr(true) ;
     }
     else
@@ -47,8 +48,10 @@ function Delete()
       let theRef = ref(database, "/" + student + "/") ;
       remove(theRef) ;
   
-      setMes(student + " Deleted!") ;
-      setShowMes(true) ;
+      setError(student + " Deleted!") ;
+      setErrType("alert-success") ;
+      setShowErr(true) ;
+
       setTimeout(15000, location.reload()) ;
     }
   }
@@ -86,27 +89,22 @@ function Delete()
     </div>
 
     <div className={ "container-fluid " + styles.mainContainer }>
-      { showErr &&
-        <div role="alert" className={ "alert alert-danger " + styles.error }>
-          <span> { error } </span>
-        </div>
-      }
-
-      { showMes &&
-        <div role="alert" className={ "alert alert-success " + styles.error }>
-          <span> { message } </span>
-        </div>
-      }
+      <div role="alert" className={ (showErr ? styles.vis : styles.displayNone) + " " + styles.error + " alert " + errType}>
+        <span> { error } </span>
+      </div>
             
       <form action="" method="post" target="_self" encType="application/x-www-form-urlencoded" 
       autoComplete="off" noValidate onSubmit={ handleSubmit }>
 
-        <select value={ student } onChange={ handleChange } autoFocus className="form-select">
-          <option value="" disabled className={ styles.hidden }> Select a Student </option>
-          {
-            names.map(mapper)
-          }
-        </select>
+        <div className="form-floating mb-3 mt-3">
+          <select name="student" value={ student } onChange={ handleChange } autoFocus className="form-select">
+            <option value="" disabled className={ styles.hidden }> Select a Student </option>
+            {
+              names.map(mapper)
+            }
+          </select>
+          <label htmlFor="student"> Name </label>
+        </div>
 
         <button onClick={ delStudent } type="button" className={ "btn btn-primary " + styles.button }> Submit </button>
 

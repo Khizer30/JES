@@ -10,7 +10,7 @@ function RequireAuth({ children })
 
   if (!auth.user)
   {
-    return <Navigate to="/" /> ;
+    return <Navigate to="*" /> ;
   }
   else
   {
