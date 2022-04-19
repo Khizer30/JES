@@ -1,6 +1,6 @@
 import React, { useState } from "react" ;
 import { ref, update } from "firebase/database" ;
-import { database } from "/src/firebase.js" ;
+import { database, getData } from "/src/firebase.js" ;
 import styles from "/src/styles.module.css" ;
 
 // Image
@@ -9,6 +9,9 @@ import editImage from "/img/edit.png" ;
 // Edit Component
 function Edit()
 {
+  // Fetch Data from Firebase
+  getData() ;
+
   // Get Data from Storage
   let data = JSON.parse(localStorage.getItem("data")) ;
 
@@ -66,6 +69,7 @@ function Edit()
   let names = getNames() ;
   const [student, setStudent] = useState("") ;
   const [inputs, setInputs] = useState({}) ;
+  const classes = ["Playgroup", "Nursery", "Grade I", "Grade II", "Grade III", "Grade IV", "Grade V", "Grade VI", "Grade VII"] ;
   // ... 
   const [showRest, setShowRest] = useState(false) ;
   const [error, setError] = useState("") ;
@@ -167,7 +171,7 @@ function Edit()
 
             <div className="form-floating mb-3 mt-3">
               <select name="student" value={ student } onChange={ handleStudent } autoFocus className={ "form-select " + styles.input2 }>
-                <option value="" disabled className={ styles.hidden }> Select a Student </option>
+                <option value="" disabled required className={ styles.hidden }> Select a Student </option>
                 {
                   names.map(mapper)
                 }
@@ -194,19 +198,12 @@ function Edit()
               </div>
 
               <div className="form-floating mb-3 mt-3">
-                <input 
-                  name="theClass" 
-                  type="text"
-                  maxLength="50"
-                  minLength="5"
-                  inputMode="text"
-                  pattern="^[a-zA-Z].*[\s\.]*$"
-                  required
-                  placeholder="Class"
-                  className={ "form-control " + styles.input2 } 
-                  onChange={ handleChange }
-                  value={ inputs.theClass || "" }
-                />
+                <select name="theClass" value={ inputs.theClass || "" } onChange={ handleChange } className={ "form-select " + styles.input2 }>
+                  <option value="" disabled required className={ styles.hidden }> Select a Class </option>
+                  {
+                    classes.map(mapper)
+                  }
+                </select>
                 <label htmlFor="theClass"> Class </label>
               </div>
 

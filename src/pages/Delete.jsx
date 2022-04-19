@@ -1,11 +1,14 @@
 import React, { useState } from "react" ;
 import { ref, remove } from "firebase/database" ;
-import { database } from "/src/firebase.js" ;
+import { database, getData } from "/src/firebase.js" ;
 import styles from "/src/styles.module.css" ;
 
 // Delete Component
 function Delete()
 {
+  // Fetch Data from Firebase
+  getData() ;
+
   // Get Data from Storage
   let data = JSON.parse(localStorage.getItem("data")) ;
 
@@ -98,7 +101,7 @@ function Delete()
 
         <div className="form-floating mb-3 mt-3">
           <select name="student" value={ student } onChange={ handleChange } autoFocus className="form-select">
-            <option value="" disabled className={ styles.hidden }> Select a Student </option>
+            <option value="" disabled required className={ styles.hidden }> Select a Student </option>
             {
               names.map(mapper)
             }

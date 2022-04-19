@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react" ;
+import { getData } from "/src/firebase.js" ;
 import styles from "/src/styles.module.css" ;
 
 // Image
@@ -7,6 +8,9 @@ import challanLogo from "/img/print.png" ;
 // Print Component
 function Print()
 {
+  // Fetch Data from Firebase
+  getData() ;
+
   // Get Data from Storage
   let data = JSON.parse(localStorage.getItem("data")) ;
 
@@ -171,7 +175,7 @@ function Print()
     let html =
     (
     <>
-      <option value={ x }> { x } </option>
+      <option value={ x } key={ x }> { x } </option>
     </>
     ) ;
 
@@ -203,7 +207,7 @@ function Print()
 
             <div className="form-floating mb-3 mt-3">
               <select name="student" value={ student } onChange={ handleStudent } autoFocus className={ "form-select " + styles.input2 }>
-                <option value="" disabled className={ styles.hidden }> Select a Student </option>
+                <option value="" disabled required className={ styles.hidden }> Select a Student </option>
                 {
                   names.map(mapper)
                 }
@@ -217,6 +221,7 @@ function Print()
                 type="text"
                 maxLength="50"
                 placeholder="Father's Name"
+                required
                 disabled
                 className={ "form-control " + styles.input } 
                 value={ father.current }
@@ -229,9 +234,10 @@ function Print()
                 name="theClass" 
                 type="text"
                 maxLength="50"
-                placeholder="Class" 
+                placeholder="Class"
+                required
                 disabled
-                className={ "form-control " + styles.input } 
+                className={ "form-control " + styles.input2 } 
                 value={ theClass.current }
               />
               <label htmlFor="theClass"> Class </label>
@@ -243,6 +249,7 @@ function Print()
                 type="text"
                 maxLength="50"
                 placeholder="Reg No."
+                required
                 disabled 
                 className={ "form-control " + styles.input } 
                 value={ reg.current }
@@ -255,6 +262,7 @@ function Print()
                 <input 
                   name="date" 
                   type="date"
+                  required
                   className={ "form-control " + styles.input } 
                   onChange={ handleChange }
                   value={ date }
@@ -268,6 +276,7 @@ function Print()
                   type="number"
                   max="100000"
                   placeholder="Fees"
+                  required
                   className={ "form-control " + styles.input } 
                   onChange={ handleChange }
                   value={ fees }
@@ -281,6 +290,7 @@ function Print()
                   type="number"
                   max="100000"
                   placeholder="Arrears"
+                  required
                   className={ "form-control " + styles.input } 
                   onChange={ handleChange }
                   value={ arrears }

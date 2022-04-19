@@ -11,6 +11,7 @@ function Add()
 {
   // Variables
   const [inputs, setInputs] = useState({}) ;
+  const classes = ["Playgroup", "Nursery", "Grade I", "Grade II", "Grade III", "Grade IV", "Grade V", "Grade VI", "Grade VII"] ;
   // ...
   const [error, setError] = useState("") ;
   const [errType, setErrType] = useState("") ;
@@ -109,6 +110,19 @@ function Add()
     event.preventDefault() ;
   }  
 
+  // Mapper
+  const mapper = (x) =>
+  {
+    let html =
+    (
+    <>
+      <option value={ x } key={ x }> { x } </option>
+    </>
+    ) ;
+
+    return html ;
+  }
+
   let html = 
   (
   <>
@@ -163,19 +177,12 @@ function Add()
             </div>
 
             <div className="form-floating mb-3 mt-3">
-              <input 
-                name="theClass" 
-                type="text"
-                maxLength="50"
-                minLength="5"
-                inputMode="text"
-                pattern="^[a-zA-Z].*[\s\.]*$"
-                required
-                placeholder="Class"
-                className={ "form-control " + styles.input2 } 
-                onChange={ handleChange }
-                value={ inputs.theClass || "" }
-              />
+              <select name="theClass" value={ inputs.theClass || "" } onChange={ handleChange } className={ "form-select " + styles.input2 }>
+                <option value="" disabled required className={ styles.hidden }> Select a Class </option>
+                {
+                  classes.map(mapper)
+                }
+              </select>
               <label htmlFor="theClass"> Class </label>
             </div>
 
