@@ -1,10 +1,8 @@
 import React, { useState } from "react" ;
 import { Link } from "react-router-dom";
-import { getData } from "/src/firebase.js" ;
 import styles from "/src/styles.module.css" ;
 
 // Images
-import homeLogo from "/img/home_logo.png" ;
 import homeHover from "/img/home_hover.png" ;
 import homePrint from "/img/home_print.png" ;
 import homeEdit from "/img/home_edit.png" ;
@@ -47,20 +45,16 @@ function Home()
   // Title
   document.title = "Jakson Education System" ;
 
-  // Fetch Data from Firebase
-  getData() ;
-
   let html = 
   (
   <>
     <div className={ "container-fluid " + styles.homeContainer }>
-      <img src={ homeLogo } className={ styles.homeImage } />
 
       <div>
         <Modal source={ homePrint } link="print" />
         <Modal source={ homeEdit } link="edit" />
-        <Modal source={ homeDelete } link="delete" />
         <Modal source={ homeAdd } link="add" />
+        <Modal source={ homeDelete } link="delete" />
       </div>
 
     </div>

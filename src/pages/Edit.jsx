@@ -1,6 +1,6 @@
 import React, { useState } from "react" ;
 import { ref, update } from "firebase/database" ;
-import { database, getData } from "/src/firebase.js" ;
+import { database } from "/src/firebase.js" ;
 import styles from "/src/styles.module.css" ;
 
 // Image
@@ -9,28 +9,13 @@ import editImage from "/img/edit.png" ;
 // Edit Component
 function Edit()
 {
-  // Fetch Data from Firebase
-  getData() ;
-
   // Get Data from Storage
-  let data = JSON.parse(localStorage.getItem("data")) ;
-
-  // Get Student Names
-  const getNames = () =>
-  {
-    let names = [] ;
-    for (var x in data)
-    {
-      names.push(x) ;
-    }
-
-    return names ;
-  }
+  let data = JSON.parse(localStorage.getItem("data"))["Student Record"] ;
 
   // Check Input
   const checkInput = (it, len, reg) =>
   {
-    var pattern = new RegExp(reg) ;
+    let pattern = new RegExp(reg) ;
 
     if (it !== "" && it !== undefined)
     {
@@ -65,13 +50,37 @@ function Edit()
     }
   }
 
+  // Check Length
+  const checkLength = (it, len) =>
+  {
+    if (it !== "" && it !== undefined && it !== "NULL")
+    {
+      if (it.length <= len)
+      {
+        return true ;
+      }
+      else
+      {
+        setError("Lengthy Input") ;
+        setErrType("alert-danger") ;
+        setShowErr(true) ;
+        return false ;
+      }
+    }
+    else
+    {
+      setShowErr(true) ;
+      setError("Don't Leave Any Field Empty") ;
+      setErrType("alert-danger") ;
+      return false ;
+    }
+  }
+
   // Variables
-  let names = getNames() ;
-  const [student, setStudent] = useState("") ;
-  const [inputs, setInputs] = useState({}) ;
-  const classes = ["Playgroup", "Nursery", "Grade I", "Grade II", "Grade III", "Grade IV", "Grade V", "Grade VI", "Grade VII"] ;
+  const [inputs, setInputs] = useState({ student: "NULL", theClass: "NULL", father: "", reg: "", fees: "", arrears: "" }) ;
+  const [students, setStudents] = useState([]) ;
+  const classes = ["Playgroup", "Nursery", "KG", "Grade I", "Grade II", "Grade III", "Grade IV", "Grade V", "Grade VI"] ;
   // ... 
-  const [showRest, setShowRest] = useState(false) ;
   const [error, setError] = useState("") ;
   const [errType, setErrType] = useState("") ;
   const [showErr, setShowErr] = useState(false) ;
@@ -82,17 +91,52 @@ function Edit()
   // Handle Change
   const handleChange = (event) =>
   {
-    setInputs(values => ({ ...values, [event.target.name]: event.target.value })) ;
+    let name = event.target.name ;
+    let value = event.target.value ;
+
+    if (name === "father" || name === "reg")
+    {
+      value = value.toUpperCase() ;
+    }
+
+    setInputs(values => ({ ...values, [name]: value })) ;
+
+    // Get Students in Class
+    if (name === "theClass")
+    {
+      // Reset
+      setStudents([]) ;
+      inputs.student = "NULL" ;
+
+      for (let x in data[value])
+      {
+        setStudents(values => ([ ...values, x ])) ;
+      }
+    }
+
+    // Get Data About Student
+    if (name === "student")
+    {
+      let student = data[inputs.theClass][value] ;
+
+      setInputs(values => 
+      ({ 
+        ...values, 
+        father: student["Father"], 
+        reg: student["Reg"], 
+        fees: student["Fees"], 
+        arrears: student["Arrears"] 
+      })) ;
+    }
   }
   
   // Send Data to Firebase
   const sendData = () =>
   {
-    let theRef = ref(database, "/" + student) ;
+    let theRef = ref(database, "Student Record/" + inputs.theClass + "/" + inputs.student + "/") ;
     update(theRef, 
     {
       "Father": inputs.father,
-      "Class": inputs.theClass,
       "Reg": inputs.reg,
       "Fees": inputs.fees,
       "Arrears": inputs.arrears
@@ -105,32 +149,17 @@ function Edit()
     setShowErr(false) ;
 
     if (checkInput(inputs.father, 50, "^[a-zA-Z].*[\s\.]*$") &&
-    checkInput(inputs.theClass, 50, "^[a-zA-Z].*[\s\.]*$") &&
+    checkLength(inputs.theClass, 50) &&
     checkInput(inputs.reg, 50, "[A-Z\d]") &&
     checkInput(inputs.fees, 6, "^[0-9]+$") &&
     checkInput(inputs.arrears, 6, "^[0-9]+$"))
     {
       sendData() ;
 
-      setError(student + " Edited!") ;
+      setError(inputs.student + " Edited!") ;
       setErrType("alert-success") ;
       setShowErr(true) ;
     }
-  }
-
-  // Get Remaining Values
-  const handleStudent = (event) =>
-  {
-    let name = event.target.value ;
-    setStudent(name) ;
-
-    setShowRest(true) ;
-
-    inputs.father = data[name]["Father"] ;
-    inputs.theClass = data[name]["Class"] ;
-    inputs.reg = data[name]["Reg"] ;
-    inputs.fees = data[name]["Fees"] ;
-    inputs.arrears = data[name]["Arrears"] ;
   }
  
   // Map Options
@@ -165,21 +194,34 @@ function Edit()
           <form action="" method="post" target="_self" encType="application/x-www-form-urlencoded" 
           autoComplete="off" noValidate onSubmit={ handleSubmit }>
 
-          <div role="alert" className={ (showErr ? styles.vis : styles.displayNone) + " " + styles.error + " alert " + errType}>
-            <span> { error } </span>
-          </div>
+            <div role="alert" className={ (showErr ? styles.vis : styles.displayNone) + " " + styles.error + " alert " + errType}>
+              <span> { error } </span>
+            </div>
 
             <div className="form-floating mb-3 mt-3">
-              <select name="student" value={ student } onChange={ handleStudent } autoFocus className={ "form-select " + styles.input2 }>
-                <option value="" disabled required className={ styles.hidden }> Select a Student </option>
+              <select name="theClass" value={ inputs.theClass || "" } onChange={ handleChange } className={ "form-select " + styles.input2 }>
+                <option value="NULL" disabled required className={ styles.hidden }> Select a Class </option>
                 {
-                  names.map(mapper)
+                  classes.map(mapper)
+                }
+              </select>
+              <label htmlFor="theClass"> Class </label>
+            </div>
+
+          { (inputs.theClass !== "NULL") &&
+            <div className="form-floating mb-3 mt-3">
+              <select name="student" value={ inputs.student } onChange={ handleChange } autoFocus className={ "form-select " + styles.input2 }>
+                <option value="NULL" disabled required className={ styles.hidden }> Select a Student </option>
+                {
+                  students.map(mapper)
                 }
               </select>
               <label htmlFor="student"> Name </label> 
             </div>
+          }
 
-            <div className={ showRest ? styles.visible : styles.invisible }>
+          { (inputs.student !== "NULL") &&
+            <div>
               <div className="form-floating mb-3 mt-3">
                 <input 
                   name="father" 
@@ -195,16 +237,6 @@ function Edit()
                   value={ inputs.father || "" }
                 />
                 <label htmlFor="father"> Father's Name </label>
-              </div>
-
-              <div className="form-floating mb-3 mt-3">
-                <select name="theClass" value={ inputs.theClass || "" } onChange={ handleChange } className={ "form-select " + styles.input2 }>
-                  <option value="" disabled required className={ styles.hidden }> Select a Class </option>
-                  {
-                    classes.map(mapper)
-                  }
-                </select>
-                <label htmlFor="theClass"> Class </label>
               </div>
 
               <div className="form-floating mb-3 mt-3">
@@ -258,6 +290,7 @@ function Edit()
 
               <button onClick={ editStudent } type="button" className={ "btn btn-primary " + styles.button }> Edit Student </button>
             </div>
+          }
           </form>
         </div>
         <div className="col-md-6 d-md-flex align-items-md-center">

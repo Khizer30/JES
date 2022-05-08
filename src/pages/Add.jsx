@@ -11,7 +11,7 @@ function Add()
 {
   // Variables
   const [inputs, setInputs] = useState({}) ;
-  const classes = ["Playgroup", "Nursery", "Grade I", "Grade II", "Grade III", "Grade IV", "Grade V", "Grade VI", "Grade VII"] ;
+  const classes = ["Playgroup", "Nursery", "KG", "Grade I", "Grade II", "Grade III", "Grade IV", "Grade V", "Grade VI"] ;
   // ...
   const [error, setError] = useState("") ;
   const [errType, setErrType] = useState("") ;
@@ -23,7 +23,7 @@ function Add()
   // Check Input
   const checkInput = (it, len, reg) =>
   {
-    var pattern = new RegExp(reg) ;
+    let pattern = new RegExp(reg) ;
 
     if (it !== "" && it !== undefined)
     {
@@ -58,6 +58,32 @@ function Add()
     }
   }
 
+  // Check Length
+  const checkLength = (it, len) =>
+  {
+    if (it !== "" && it !== undefined && it !== "NULL")
+    {
+      if (it.length <= len)
+      {
+        return true ;
+      }
+      else
+      {
+        setError("Lengthy Input") ;
+        setErrType("alert-danger") ;
+        setShowErr(true) ;
+        return false ;
+      }
+    }
+    else
+    {
+      setShowErr(true) ;
+      setError("Don't Leave Any Field Empty") ;
+      setErrType("alert-danger") ;
+      return false ;
+    }
+  }
+
   // Add Student
   const addStudent = () =>
   {
@@ -65,7 +91,7 @@ function Add()
 
     if (checkInput(inputs.name, 50, "^[a-zA-Z].*[\s\.]*$") &&
     checkInput(inputs.father, 50, "^[a-zA-Z].*[\s\.]*$") &&
-    checkInput(inputs.theClass, 50, "^[a-zA-Z].*[\s\.]*$") &&
+    checkLength(inputs.theClass, 50) &&
     checkInput(inputs.reg, 50, "[A-Z\d]") &&
     checkInput(inputs.fees, 6, "^[0-9]+$"))
     {
@@ -80,10 +106,9 @@ function Add()
   // Send Data To Database
   const sendData = () =>
   {
-    set(ref(database, inputs.name + "/"),
+    set(ref(database, "Student Record/" + inputs.theClass + "/" + inputs.name + "/"),
     {
       "Father": inputs.father,
-      "Class": inputs.theClass,
       "Reg": inputs.reg,
       "Fees": inputs.fees,
       "Arrears": "0"
@@ -177,16 +202,6 @@ function Add()
             </div>
 
             <div className="form-floating mb-3 mt-3">
-              <select name="theClass" value={ inputs.theClass || "" } onChange={ handleChange } className={ "form-select " + styles.input2 }>
-                <option value="" disabled required className={ styles.hidden }> Select a Class </option>
-                {
-                  classes.map(mapper)
-                }
-              </select>
-              <label htmlFor="theClass"> Class </label>
-            </div>
-
-            <div className="form-floating mb-3 mt-3">
               <input 
                 name="reg" 
                 type="text"
@@ -201,6 +216,16 @@ function Add()
                 value={ inputs.reg || "" }
               />
               <label htmlFor="reg"> Reg No. </label>
+            </div>
+
+            <div className="form-floating mb-3 mt-3">
+              <select name="theClass" value={ inputs.theClass || "" } onChange={ handleChange } className={ "form-select " + styles.input2 }>
+                <option value="" disabled required className={ styles.hidden }> Select a Class </option>
+                {
+                  classes.map(mapper)
+                }
+              </select>
+              <label htmlFor="theClass"> Class </label>
             </div>
 
             <div className="form-floating mb-3 mt-3">

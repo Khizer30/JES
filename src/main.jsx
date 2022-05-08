@@ -2,6 +2,8 @@ import React from "react" ;
 import ReactDOM from "react-dom" ;
 import { BrowserRouter, Routes, Route } from "react-router-dom" ;
 import loadable from "@loadable/component" ;
+import { ref, onValue } from "firebase/database" ;
+import { database } from "/src/firebase.js" ;
 import { AuthProvider, useAuth } from "/src/auth.jsx" ;
 import { RequireAuth } from "/src/checkAuthState.jsx" ;
 
@@ -46,6 +48,18 @@ function Root()
 // App Component
 function App()
 {
+  onValue(ref(database, "/"), (snapshot) => 
+  {
+    if (snapshot.exists())
+    {
+      localStorage.setItem("data", JSON.stringify(snapshot.val())) ;
+    }
+    else
+    {
+      localStorage.setItem("data", JSON.stringify({})) ;
+    }
+  }) ;
+
   let html =
   (
   <>

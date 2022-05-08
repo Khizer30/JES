@@ -1,5 +1,4 @@
 import React, { useState, useRef } from "react" ;
-import { getData } from "/src/firebase.js" ;
 import styles from "/src/styles.module.css" ;
 
 // Image
@@ -8,23 +7,8 @@ import challanLogo from "/img/print.png" ;
 // Print Component
 function Print()
 {
-  // Fetch Data from Firebase
-  getData() ;
-
   // Get Data from Storage
-  let data = JSON.parse(localStorage.getItem("data")) ;
-
-  // Get Student Names
-  const getNames = () =>
-  {
-    let names = [] ;
-    for (var x in data)
-    {
-      names.push(x) ;
-    }
-
-    return names ;
-  }
+  let data = JSON.parse(localStorage.getItem("data"))["Student Record"] ;
 
   // Get Date
   const getToday = (style) =>
@@ -58,10 +42,11 @@ function Print()
   }
 
   // Variables
-  let names = getNames() ;
-  const [student, setStudent] = useState("") ;
+  const [students, setStudents] = useState([]) ;
+  const classes = ["Playgroup", "Nursery", "KG", "Grade I", "Grade II", "Grade III", "Grade IV", "Grade V", "Grade VI"] ;
+  const [theClass, setClass] = useState("NULL")
+  const [student, setStudent] = useState("NULL") ;
   const father = useRef("") ;
-  const theClass = useRef("") ;
   const reg = useRef("") ;
   const [date, setDate] = useState(getToday("date")) ;
   const [fees, setFees] = useState("") ;
@@ -105,9 +90,9 @@ function Print()
         doc.render(
         {
           name: student,
-          father: father.current,
-          reg: reg.current,
-          theClass: theClass.current,
+          father: ((father.current !== "NULL") ? father.current : ""),
+          reg: ((reg.current !== "NULL") ? reg.current : ""),
+          theClass: theClass,
           issue: getToday("issue"),
           due: getToday("due"),
           month: getToday("month"),
@@ -140,15 +125,38 @@ function Print()
     let name = event.target.name ;
     let value = event.target.value ;
 
-    if (name == "date")
+    if (name === "theClass")
+    {
+      setClass(value) ;
+
+      // Reset
+      setStudents([]) ;
+      setStudent("NULL") ;
+
+      for (let x in data[value])
+      {
+        setStudents(values => ([ ...values, x ])) ;
+      }
+    }
+    else if (name === "student")
+    {
+      let x = data[theClass][value] ;
+      setStudent(value) ;
+
+      father.current = x["Father"] ;
+      reg.current = x["Reg"] ;
+      setFees(x["Fees"]) ;
+      setArrears(x["Arrears"]) ;
+    }
+    else if (name === "date")
     {
       setDate(value) ;
     }
-    else if (name == "fees")
+    else if (name === "fees")
     {
       setFees(value) ;
     }
-    else if (name == "arrears")
+    else if (name === "arrears")
     {
       setArrears(value) ;
     }
@@ -163,7 +171,7 @@ function Print()
     setShowRest(true) ;
 
     father.current = data[name]["Father"] ;
-    theClass.current = data[name]["Class"] ;
+    
     reg.current = data[name]["Reg"] ;
     setFees(data[name]["Fees"]) ;
     setArrears(data[name]["Arrears"]) ;
@@ -206,15 +214,29 @@ function Print()
             </div>
 
             <div className="form-floating mb-3 mt-3">
-              <select name="student" value={ student } onChange={ handleStudent } autoFocus className={ "form-select " + styles.input2 }>
-                <option value="" disabled required className={ styles.hidden }> Select a Student </option>
+              <select name="theClass" value={ theClass } onChange={ handleChange } autoFocus className={ "form-select " + styles.input2 }>
+                <option value="NULL" disabled required className={ styles.hidden }> Select a Class </option>
                 {
-                  names.map(mapper)
+                  classes.map(mapper)
+                }
+              </select>
+              <label htmlFor="theClass"> Class </label>
+            </div>
+
+          { (theClass !== "NULL") &&
+            <div className="form-floating mb-3 mt-3">
+              <select name="student" value={ student } onChange={ handleChange } autoFocus className={ "form-select " + styles.input2 }>
+                <option value="NULL" disabled required className={ styles.hidden }> Select a Student </option>
+                {
+                  students.map(mapper)
                 }
               </select>
               <label htmlFor="student"> Name </label>
             </div>
+          }
 
+          { (student !== "NULL") &&
+          <>
             <div className="form-floating mb-3 mt-3">
               <input 
                 name="father" 
@@ -231,20 +253,6 @@ function Print()
 
             <div className="form-floating mb-3 mt-3">
               <input 
-                name="theClass" 
-                type="text"
-                maxLength="50"
-                placeholder="Class"
-                required
-                disabled
-                className={ "form-control " + styles.input2 } 
-                value={ theClass.current }
-              />
-              <label htmlFor="theClass"> Class </label>
-            </div>
-
-            <div className="form-floating mb-3 mt-3">
-              <input 
                 name="reg" 
                 type="text"
                 maxLength="50"
@@ -257,7 +265,7 @@ function Print()
               <label htmlFor="reg"> Reg No. </label>
             </div>
 
-            <div className={ showRest ? styles.visible : styles.invisible }>
+            <div>
               <div className="form-floating mb-3 mt-3">
                 <input 
                   name="date" 
@@ -299,8 +307,10 @@ function Print()
               </div>
 
               <button onClick={ printChallan } type="button" className={ "btn btn-primary " + styles.button }> Create Fee Challan </button>
-           
+
             </div>
+          </>
+          }
           </form>
         </div>
 

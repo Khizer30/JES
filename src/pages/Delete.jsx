@@ -1,32 +1,18 @@
 import React, { useState } from "react" ;
 import { ref, remove } from "firebase/database" ;
-import { database, getData } from "/src/firebase.js" ;
+import { database } from "/src/firebase.js" ;
 import styles from "/src/styles.module.css" ;
 
 // Delete Component
 function Delete()
 {
-  // Fetch Data from Firebase
-  getData() ;
-
   // Get Data from Storage
-  let data = JSON.parse(localStorage.getItem("data")) ;
-
-  // Get Student Names
-  const getNames = () =>
-  {
-    let names = [] ;
-    for (var x in data)
-    {
-      names.push(x) ;
-    }
-
-    return names ;
-  }
+  let data = JSON.parse(localStorage.getItem("data"))["Student Record"] ;
 
   // Variables
-  const [student, setStudent] = useState("") ;
-  let names = getNames() ;
+  const [inputs, setInputs] = useState({ student: "NULL", theClass: "NULL" }) ;
+  const [students, setStudents] = useState([]) ;
+  const classes = ["Playgroup", "Nursery", "KG", "Grade I", "Grade II", "Grade III", "Grade IV", "Grade V", "Grade VI"] ;
   // ...
   const [error, setError] = useState("") ;
   const [errType, setErrType] = useState("") ;
@@ -40,7 +26,7 @@ function Delete()
   {
     setShowErr(false) ;
 
-    if (student == "")
+    if (inputs.student === "NULL" || inputs.student === undefined)
     {
       setError("Select a Student to Delete") ;
       setErrType("alert-danger") ;
@@ -48,14 +34,15 @@ function Delete()
     }
     else
     {
-      let theRef = ref(database, "/" + student + "/") ;
+      let theRef = ref(database, "Student Record/" + inputs.theClass + "/" + inputs.student) ;
       remove(theRef) ;
   
-      setError(student + " Deleted!") ;
+      setError(inputs.student + " Deleted!") ;
       setErrType("alert-success") ;
       setShowErr(true) ;
 
-      setTimeout(15000, location.reload()) ;
+      // Reset
+      setInputs({ student: "NULL", theClass: "NULL" }) ;
     }
   }
 
@@ -75,7 +62,21 @@ function Delete()
   // Get Input
   const handleChange = (event) =>
   {
-    setStudent(event.target.value) ;
+    let name = event.target.name ;
+    let value = event.target.value ;
+
+    setInputs(values => ({ ...values, [name]: value })) ;
+
+    // Get Students in Class
+    if (name === "theClass")
+    {
+      setStudents([]) ;
+
+      for (let x in data[value])
+      {
+        setStudents(values => ([  ...values, x ])) ;
+      }
+    }
   }
 
   // Handle Bug
@@ -100,14 +101,26 @@ function Delete()
       autoComplete="off" noValidate onSubmit={ handleSubmit }>
 
         <div className="form-floating mb-3 mt-3">
-          <select name="student" value={ student } onChange={ handleChange } autoFocus className="form-select">
-            <option value="" disabled required className={ styles.hidden }> Select a Student </option>
+          <select name="theClass" value={ inputs.theClass || "" } onChange={ handleChange } autoFocus className="form-select">
+            <option value="NULL" disabled required className={ styles.hidden }> Select a Class </option>
             {
-              names.map(mapper)
+              classes.map(mapper)
+            }
+          </select>
+          <label htmlFor="theClass"> Class </label>
+        </div>
+
+      { (inputs.theClass !== "NULL") &&
+        <div className="form-floating mb-3 mt-3">
+          <select name="student" value={ inputs.student || "" } onChange={ handleChange } autoFocus className="form-select">
+            <option value="NULL" disabled required className={ styles.hidden }> Select a Student </option>
+            {
+              students.map(mapper)
             }
           </select>
           <label htmlFor="student"> Name </label>
         </div>
+      }
 
         <button onClick={ delStudent } type="button" className={ "btn btn-primary " + styles.button }> Submit </button>
 
